@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-sample-app-k8s
+  labels:
+    app: spring-sample-app-k8s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-sample-app-k8s
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: spring-sample-app-k8s
+    spec:
+      containers:
+        - name: spring-sample-app-k8s
+          image: springboot-sample-app:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5

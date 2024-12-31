@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spring-boot-sample-app-service-monitor
+spec:
+  selector:
+    matchLabels:
+      app: spring-sample-app-k8s
+  endpoints:
+    - port: http
+      interval: 1s
+      path: "/actuator/prometheus"
